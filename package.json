@@ -1,0 +1,24 @@
+{
+  "devDependencies": {
+    "@types/node": "^18.0.3",
+    "typescript": "^4.7.4"
+  },
+  "name": "super-html",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "author": "Necati <necatifk07@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "ts": "tsc index.ts --watch",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "html-formatter": "^0.1.9",
+    "html-prettify": "^1.0.7",
+    "js-beautify": "^1.14.4",
+    "node-html-parser": "^5.3.3",
+    "nodemon": "^2.0.19",
+    "parse5": "^7.0.0",
+    "prettier": "^2.7.1"
+  }
+}
