@@ -4,13 +4,13 @@
     "typescript": "^4.7.4"
   },
   "name": "super-html",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "author": "Necati <necatifk07@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "ts": "tsc index.ts --watch",
-    "dev": "nodemon index.js"
+    "dev": "node ./cli.js",
+    "build": "node ./cli.js build"
   },
   "bin": {
     "super-html": "./cli.js"
@@ -18,6 +18,7 @@
   "dependencies": {
     "arg": "^5.0.2",
     "chalk": "4.1.2",
+    "chokidar": "^3.5.3",
     "html-formatter": "^0.1.9",
     "html-prettify": "^1.0.7",
     "js-beautify": "^1.14.4",

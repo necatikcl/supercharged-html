@@ -7,7 +7,7 @@ const colors = {
 }
 
 const icons = {
-  info: 'ℹ️',
+  info: 'ℹ️ ',
   success: '✅',
   error: '❌'
 }

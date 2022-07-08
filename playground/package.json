@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "name": "super-html-playground",
+  "scripts": {
+    "dev": "super-html",
+    "build": "super-html build"
+  },
+  "dependencies": {
+    "super-html": "../"
+  }
+}
