@@ -1,4 +1,4 @@
-const { readdirSync, readFileSync, rmSync, watchFile, watch } = require('fs');
+const { readdirSync, readFileSync, rmSync } = require('fs');
 const { parse } = require('node-html-parser');
 const beautify = require("html-formatter");
 var chokidar = require('chokidar');
@@ -64,6 +64,8 @@ const superHTML = ({ production = false }) => {
       pageWatcher.on('unlink', () => rmSync(`./dist/${fileName}`, { recursive: true, force: true }));
     }
   });
+
+  if (production) return;
 
   const componentsWatcher = chokidar.watch('./src/components/**');
 
