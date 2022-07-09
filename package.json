@@ -3,7 +3,7 @@
     "@types/node": "^18.0.3",
     "typescript": "^4.7.4"
   },
-  "name": "super-html",
+  "name": "super-charged-html",
   "version": "1.0.1",
   "main": "index.js",
   "author": "Necati <necatifk07@gmail.com>",
