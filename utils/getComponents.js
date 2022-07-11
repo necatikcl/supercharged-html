@@ -62,8 +62,8 @@ const getComponents = () => {
     const content = buffer.toString();
     const component = parse(content);
 
-    components[fileName] = component;
-    componentDependencies[fileName] = renderComponents(components, component);
+    components[componentName] = component;
+    componentDependencies[componentName] = renderComponents(components, component);
 
     const html = component.toString();
 
