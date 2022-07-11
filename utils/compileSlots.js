@@ -14,7 +14,11 @@ const compileSlots = (componentPlaceholder, componentSource) => {
       return;
     };
 
-    const template = templates.find(item => item.getAttribute('name') === name);
+    console.log(templates)
+    const template = templates.find(
+      item => item.getAttribute('name') === name
+        || item.rawAttrs.includes(`#${name}`)
+    );
     if (!template) return;
 
     slotElements[name] = {
