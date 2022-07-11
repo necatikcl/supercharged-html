@@ -7,7 +7,19 @@ const inheritAttributes = (child, element) => {
   const classNames = attrs.class ? attrs.class.split(' ') : [];
   delete attrs.class;
 
-  const editableComponent = parse('<div>' + child.toString() + '</div>');
+  let stringContent = child.toString();
+
+  Object.entries(attrs).forEach(([key, value]) => {
+    const regex = new RegExp("{{\\s*" + key + "\\s*}}", 'gm');
+    let replacedContent = stringContent.replace(regex, value);
+
+    if (replacedContent !== stringContent) {
+      stringContent = replacedContent
+      delete attrs[key];
+    }
+  })
+
+  const editableComponent = parse('<div>' + stringContent + '</div>');
   const el = editableComponent.firstChild.firstChild;
 
   if (!el) {
