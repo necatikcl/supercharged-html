@@ -1,23 +1,15 @@
 const { parse } = require('node-html-parser');
 const { readFileSync, readdirSync } = require('fs');
-const renderComponent = require('./renderComponent');
 const print = require('./print')
 
-const renderComponents = (components, element) => {
+const trackDependencies = (components, element) => {
+  const content = element.toString();
   const dependencies = [];
 
-  Object.keys(components).forEach(componentName => {
-    const componentPlaceholders = element.querySelectorAll('s-' + componentName.replace('.html', ''));
-
-    if (componentPlaceholders.length > 0) {
+  Object.entries(components).forEach(([componentName, componentSource]) => {
+    if (content.includes(`<s-${componentName}`)) {
       dependencies.push(componentName);
     }
-
-    componentPlaceholders.forEach(componentPlaceholder => {
-      const componentSource = components[componentName];
-
-      renderComponent(componentPlaceholder, componentSource);
-    })
   });
 
   return dependencies
@@ -41,7 +33,7 @@ const getComponents = () => {
   Object.keys(components).forEach(componentName => {
     const component = components[componentName];
 
-    componentDependencies[componentName] = renderComponents(components, component);
+    componentDependencies[componentName] = trackDependencies(components, component);
   })
 
   const componentsReworked = {};
@@ -63,7 +55,7 @@ const getComponents = () => {
     const component = parse(content);
 
     components[componentName] = component;
-    componentDependencies[componentName] = renderComponents(components, component);
+    componentDependencies[componentName] = trackDependencies(components, component);
 
     const html = component.toString();
 

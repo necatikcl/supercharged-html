@@ -6,7 +6,7 @@ var chokidar = require('chokidar');
 const print = require('./utils/print');
 const writeFileSyncRecursive = require('./utils/writeFileSyncRecursive');
 const getComponents = require('./utils/getComponents')
-const renderComponent = require('./utils/renderComponent');
+const renderChildComponents = require('./utils/renderChildComponents');
 
 const pageDependencies = {}
 
@@ -20,21 +20,7 @@ const compileHTML = ({ components, pageName }) => {
   const pageContent = readFileSync(input).toString('utf-8');
   const pageElement = parse(pageContent);
 
-  pageDependencies[input] = [];
-
-  Object.keys(components).forEach(componentName => {
-    const componentPlaceholders = pageElement.querySelectorAll('s-' + componentName)
-
-    if (componentPlaceholders.length > 0) {
-      pageDependencies[input].push(componentName);
-    }
-
-    componentPlaceholders.forEach(componentPlaceholder => {
-      const componentSource = components[componentName]();
-
-      renderComponent(componentPlaceholder, componentSource)
-    })
-  })
+  pageDependencies[input] = renderChildComponents(components, pageElement);
 
   writeFileSyncRecursive(
     output,

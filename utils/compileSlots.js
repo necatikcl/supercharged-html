@@ -1,8 +1,12 @@
 const { parse } = require('node-html-parser');
+const print = require('./print')
 
 const compileSlots = (componentPlaceholder, componentSource) => {
+
   const slots = componentSource.querySelectorAll('slot');
   const templates = [...componentPlaceholder.querySelectorAll('template')]
+
+  const componentName = componentPlaceholder.tagName.toLowerCase().replace('s-', '');
 
   const slotElements = {}
 
@@ -14,7 +18,6 @@ const compileSlots = (componentPlaceholder, componentSource) => {
       return;
     };
 
-    console.log(templates)
     const template = templates.find(
       item => item.getAttribute('name') === name
         || item.rawAttrs.includes(`#${name}`)
@@ -30,7 +33,8 @@ const compileSlots = (componentPlaceholder, componentSource) => {
   })
 
   if (slotElements['default']) {
-    slotElements.default.slot.replaceWith(parse(componentPlaceholder.innerHTML))
+    slotElements.default.slot.replaceWith(parse(componentPlaceholder.innerHTML));
+
     delete slotElements.default;
   }
 
