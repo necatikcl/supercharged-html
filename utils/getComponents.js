@@ -3,11 +3,12 @@ const { readFileSync, readdirSync } = require('fs');
 const print = require('./print')
 
 const trackDependencies = (components, element) => {
-  const content = element.toString();
+  const content = element.innerHTML
   const dependencies = [];
 
   Object.entries(components).forEach(([componentName, componentSource]) => {
-    if (content.includes(`<s-${componentName}`)) {
+    const regex = new RegExp("s-" + componentName + "( |>)", "gm")
+    if (content.match(regex)) {
       dependencies.push(componentName);
     }
   });
