@@ -102,11 +102,11 @@ Now, you can add these scripts:
 
 `dev` command can be used for watching HTML files and rebuilding them when they are changed.
 
-`build` command can be used for building the HTML files.
+`build` command can be used for building the HTML files, it also beautifies the output files.
 
 ## Page structure
 
-In your project, you **must** have these folders:
+Before running the scripts, you **must** have these directories:
 ```js
 - src
 --- pages
@@ -115,7 +115,7 @@ In your project, you **must** have these folders:
 
 <sub>
   <sup>
-    Currently, there is no way to change  folder names or directories.
+    Currently, there is no way to change directories.
   </sub>
 </sup>
 
