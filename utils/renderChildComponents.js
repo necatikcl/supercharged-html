@@ -14,7 +14,6 @@ const renderChildComponents = (components, element) => {
       const componentSource = components[componentName]();
 
       const newEl = renderComponent(componentPlaceholder, componentSource);
-      console.log({ newEl })
 
       if (newEl.toString().includes('<s-')) {
         renderChildComponents(components, newEl);
