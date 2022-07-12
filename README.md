@@ -77,6 +77,7 @@ To get started, you need to install `supercharged-html`:
     NPM
   </sub>
 </sup>
+
 ```bash
 npm install supercharged-html --dev
 ```
@@ -86,6 +87,7 @@ npm install supercharged-html --dev
     YARN
   </sub>
 </sup>
+
 ```bash
 yarn add -D supercharged-html
 ```
