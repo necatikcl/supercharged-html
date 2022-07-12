@@ -10,7 +10,7 @@ const renderChildComponents = require('./utils/renderChildComponents');
 
 const pageDependencies = {}
 
-const compileHTML = ({ components, pageName }) => {
+const compileHTML = ({ components, pageName, production = false }) => {
   const input = `./src/pages/${pageName}.html`;
   const output = `./dist/${pageName}.html`;
 
@@ -22,9 +22,11 @@ const compileHTML = ({ components, pageName }) => {
 
   pageDependencies[input] = renderChildComponents(components, pageElement);
 
+  const beautifiedContent = production ? beautify.render(pageElement.toString()) : pageElement.toString();
+
   writeFileSyncRecursive(
     output,
-    beautify.render(pageElement.toString()),
+    beautifiedContent,
     'utf-8'
   );
 
@@ -41,7 +43,7 @@ const superHTML = ({ production = false }) => {
   pageNames.forEach(fileName => {
     const pageName = fileName.replace('.html', '');
 
-    compileHTML({ components, pageName });
+    compileHTML({ components, pageName, production });
 
     if (!production) {
       const pageWatcher = chokidar.watch(`./src/pages/${fileName}`);
