@@ -170,6 +170,24 @@ But if you use a prop in template, it won't be passed as an HTML attribute.
 <!-- output -->
 <button>title</button>
 ```
+- You can also use props as renderer conditions. 
+```html
+<!-- component -->
+<div class="s-test">
+  <div s-if="test">if</div>
+  <div s-else>else</div>
+</div>
+
+<!-- page -->
+<s-test test></s-test>
+
+<!-- output -->
+<div class="s-test">
+  <div>if</div>
+</div>
+```
+Currently, `s-if` does not work the same way as the javascript conditions, it only looks for the specified attribute exists or has the value "false".
+
 - (soon) Inside brackets you can use Javascript expressions, like `{{ propName === "case" ? "case1": "case2" }}`
 
 ## Examples
