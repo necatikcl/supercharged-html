@@ -1,54 +1,25 @@
-const { readdirSync, readFileSync, rmSync } = require('fs');
-const { parse } = require('node-html-parser');
-const beautify = require("html-formatter");
-var chokidar = require('chokidar');
+const { readdirSync, rmSync } = require('fs');
+const chokidar = require('chokidar');
 
-const print = require('./utils/print');
-const writeFileSyncRecursive = require('./utils/writeFileSyncRecursive');
+const { pageDependencies, renderPage } = require('./utils/renderPage')
 const getComponents = require('./utils/getComponents')
-const renderChildComponents = require('./utils/renderChildComponents');
 
-const pageDependencies = {}
-
-const compileHTML = ({ components, pageName, production = false }) => {
-  const input = `./src/pages/${pageName}.html`;
-  const output = `./dist/${pageName}.html`;
-
-  const time = Date.now();
-  print({ type: 'info', content: `Compiling - pages/${pageName}` });
-
-  const pageContent = readFileSync(input).toString('utf-8');
-  const pageElement = parse(pageContent);
-
-  pageDependencies[input] = renderChildComponents(components, pageElement);
-
-  const beautifiedContent = production ? beautify.render(pageElement.toString()) : pageElement.toString();
-
-  writeFileSyncRecursive(
-    output,
-    beautifiedContent,
-    'utf-8'
-  );
-
-  print({ type: 'success', content: `Compiled - pages/${pageName} (${Date.now() - time}ms)` });
-}
-
-const superHTML = ({ production = false }) => {
+const renderAllPages = ({ production = false }) => {
   rmSync('./dist', { recursive: true, force: true });
 
-  const pageNames = readdirSync('./src/pages/');
+  const pageFileNames = readdirSync('./src/pages/');
 
   const { components, componentDependencies, rerenderComponent } = getComponents({ production });
 
-  pageNames.forEach(fileName => {
+  pageFileNames.forEach(fileName => {
     const pageName = fileName.replace('.html', '');
 
-    compileHTML({ components, pageName, production });
+    renderPage({ components, pageName, production });
 
     if (!production) {
       const pageWatcher = chokidar.watch(`./src/pages/${fileName}`);
 
-      pageWatcher.on('change', () => compileHTML({ components, pageName }));
+      pageWatcher.on('change', () => renderPage({ components, pageName }));
       pageWatcher.on('unlink', () => rmSync(`./dist/${fileName}`, { recursive: true, force: true }));
     }
   });
@@ -85,10 +56,10 @@ const superHTML = ({ production = false }) => {
 
     Object.entries(pageDependencies).forEach(([path, dependencies]) => {
       if (componentsChanged.some(dependency => dependencies.includes(dependency))) {
-        compileHTML({ components, pageName: path.replace('./src/pages/', '').replace('.html', '') });
+        renderPage({ components, pageName: path.replace('./src/pages/', '').replace('.html', '') });
       }
     })
   });
 }
 
-module.exports = superHTML
+module.exports = renderAllPages

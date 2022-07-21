@@ -174,21 +174,22 @@ But if you use a prop in template, it won't be passed as an HTML attribute.
 ```html
 <!-- component -->
 <div class="s-test">
-  <div s-if="test">if</div>
-  <div s-else>else</div>
+  <div s-if="testNumber === 2">Is 2</div>
+  <div s-else-if="testNumber > 2">More than 2</div>
+  <div s-else>1 or less</div>
 </div>
 
 <!-- page -->
-<s-test test></s-test>
+<s-test test="4"></s-test>
 
 <!-- output -->
 <div class="s-test">
-  <div>if</div>
+  <div>More than 3</div>
 </div>
 ```
-Currently, `s-if` does not work the same way as the javascript conditions, it only looks for the specified attribute exists or has the value "false".
+The values of `s-if` and `s-else-if` attributes are javascript expressions that are evaluated with the component attributes.
 
-- (soon) Inside brackets you can use Javascript expressions, like `{{ propName === "case" ? "case1": "case2" }}`
+- Inside brackets you can use Javascript expressions, like `{{ propName === "case" ? "case1": "case2" }}`
 
 ## Examples
 Simple component

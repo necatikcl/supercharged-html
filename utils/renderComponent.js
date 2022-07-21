@@ -1,40 +1,28 @@
-const compileSlots = require('./compileSlots')
+const compileSlots = require('./compileSlots');
 const inheritAttributes = require('./inheritAttributes');
+const renderExpressions = require('./renderExpressions');
+const { parse } = require('node-html-parser');
+const checkPropsUsage = require('./checkPropsUsage');
+const removeConditionalElements = require('./removeConditionalElements');
+const compileProps = require('./compileProps');
 
-const removeConditionalElements = (componentPlaceholder, componentSource) => {
-  const conditionalElements = componentSource.querySelectorAll('[s-if]');
+const renderComponent = (componentPlaceholder, _componentSource) => {
+  const props = compileProps(componentPlaceholder);
 
-  conditionalElements.forEach(conditionalElement => {
-    const nextElement = conditionalElement.nextElementSibling;
-    const conditionalVariable = conditionalElement.getAttribute('s-if');
-    const placeholderAttr = componentPlaceholder.getAttribute(conditionalVariable);
+  const sourceStringRaw = _componentSource.toString();
+  checkPropsUsage(sourceStringRaw, props);
 
-    if (!conditionalVariable) return;
+  // {{ expression }}
+  const sourceString = renderExpressions(sourceStringRaw, props);
+  const componentSource = sourceStringRaw === sourceString ? _componentSource : parse(sourceString);
 
-    componentPlaceholder.removeAttribute(conditionalVariable);
+  // s-if, s-else
+  removeConditionalElements({ componentSource, props });
 
-    if (placeholderAttr === undefined || placeholderAttr === "false") {
-      conditionalElement.remove();
+  // <slot>
+  compileSlots({ componentPlaceholder, componentSource });
 
-      if (nextElement.hasAttribute('s-else')) {
-        nextElement.removeAttribute('s-else');
-      }
-    } else {
-      conditionalElement.removeAttribute('s-if');
-
-      if (nextElement.hasAttribute('s-else')) {
-        nextElement.remove()
-      }
-    }
-  }
-  )
-}
-
-const renderComponent = (componentPlaceholder, componentSource) => {
-  removeConditionalElements(componentPlaceholder, componentSource);
-  compileSlots(componentPlaceholder, componentSource);
-
-  const newElement = inheritAttributes(componentSource, componentPlaceholder);
+  const newElement = inheritAttributes({ componentSource, props });
   componentPlaceholder.replaceWith(newElement);
 
   return newElement;

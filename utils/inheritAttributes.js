@@ -1,26 +1,36 @@
 const { parse } = require('node-html-parser');
-const print = require('./print')
+const print = require('./print');
 
-const inheritAttributes = (child, element) => {
-  const attrs = { ...element.attributes };
+const inheritAttributes = ({ componentSource, props }) => {
+  let stringContent = componentSource.toString();
+
+  const attrs = props.filter(prop => !prop.isUsed);
+
+  const editableComponent = parse('<div>' + stringContent + '</div>');
+  const el = editableComponent.firstChild.firstChild;
+
+  attrs.forEach((attr) => {
+    if (attr.key === 'class') {
+      const classNames = attrs.class ? attrs.class.split(' ') : [];
+
+      classNames.forEach(className => {
+        el.classList.add(className)
+      })
+    } else {
+      el.setAttribute(attr.key, attr.value)
+    }
+  })
+
+  const attrClass = attrs.find(attr => attr.key === 'class');
+
+
+  if (!attrClass) {
+    return el;
+  }
 
   const classNames = attrs.class ? attrs.class.split(' ') : [];
   delete attrs.class;
 
-  let stringContent = child.toString();
-
-  Object.entries(attrs).forEach(([key, value]) => {
-    const regex = new RegExp("{{\\s*" + key + "\\s*}}", 'gm');
-    let replacedContent = stringContent.replace(regex, value);
-
-    if (replacedContent !== stringContent) {
-      stringContent = replacedContent
-      delete attrs[key];
-    }
-  })
-
-  const editableComponent = parse('<div>' + stringContent + '</div>');
-  const el = editableComponent.firstChild.firstChild;
 
   if (!el) {
     print({
@@ -30,9 +40,7 @@ const inheritAttributes = (child, element) => {
     return;
   }
 
-  Object.entries(attrs).forEach(([key, value]) => {
-    el.setAttribute(key, value)
-  })
+
 
   classNames.forEach(className => {
     el.classList.add(className)

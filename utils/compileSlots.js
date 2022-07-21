@@ -1,13 +1,9 @@
 const { parse } = require('node-html-parser');
 const print = require('./print')
 
-const compileSlots = (componentPlaceholder, componentSource) => {
-
+const compileSlots = ({ componentPlaceholder, componentSource }) => {
   const slots = componentSource.querySelectorAll('slot');
   const templates = [...componentPlaceholder.querySelectorAll('template')]
-
-  const componentName = componentPlaceholder.tagName.toLowerCase().replace('s-', '');
-
   const slotElements = {}
 
   slots.forEach(slot => {
