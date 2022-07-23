@@ -191,6 +191,11 @@ The values of `s-if` and `s-else-if` attributes are javascript expressions that 
 
 - Inside brackets you can use Javascript expressions, like `{{ propName === "case" ? "case1": "case2" }}`
 
+- You should define attributes kebab-case, but inside brackets you must use their camelCase version.
+```html
+<!-- page -->
+<s-test></s-test>
+
 ## Examples
 Simple component
 ```html
