@@ -16,7 +16,7 @@ const renderChildComponents = (components, element) => {
       const newEl = renderComponent(componentPlaceholder, componentSource);
 
       if (newEl.toString().includes('<s-')) {
-        renderChildComponents(components, newEl);
+        dependencies.push(...renderChildComponents(components, newEl));
       }
     })
   })
