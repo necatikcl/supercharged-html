@@ -27,8 +27,6 @@ const checkConditionsRecursively = (element, props) => {
     }
   } else {
     element.removeAttribute('s-if');
-
-    console.log(element)
   }
 }
 

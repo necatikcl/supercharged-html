@@ -11,9 +11,7 @@ const inheritAttributes = ({ componentSource, props }) => {
 
   attrs.forEach((attr) => {
     if (attr.key === 'class') {
-      const classNames = attrs.class ? attrs.class.split(' ') : [];
-
-      classNames.forEach(className => {
+      attr.value.forEach(className => {
         el.classList.add(className)
       })
     } else {
