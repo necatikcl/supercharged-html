@@ -18,11 +18,11 @@ const checkConditionsRecursively = (element, props) => {
   if (!condition) {
     element.remove();
 
-    if (nextElement.hasAttribute('s-else-if')) {
+    if (nextElement?.hasAttribute('s-else-if')) {
       checkConditionsRecursively(nextElement, props);
     }
 
-    if (nextElement.hasAttribute('s-else')) {
+    if (nextElement?.hasAttribute('s-else')) {
       nextElement.removeAttribute('s-else');
     }
   } else {
