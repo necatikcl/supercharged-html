@@ -18,7 +18,11 @@ const compileSlots = ({ componentPlaceholder, componentSource }) => {
       item => item.getAttribute('name') === name
         || item.rawAttrs.includes(`#${name}`)
     );
-    if (!template) return;
+
+    if (!template) {
+      slot.remove();
+      return;
+    };
 
     slotElements[name] = {
       slot,
@@ -29,13 +33,13 @@ const compileSlots = ({ componentPlaceholder, componentSource }) => {
   })
 
   if (slotElements['default']) {
-    slotElements.default.slot.replaceWith(parse(componentPlaceholder.innerHTML));
+    slotElements.default.slot.replaceWith(parse(componentPlaceholder.innerHTML, { comment: true }));
 
     delete slotElements.default;
   }
 
   Object.entries(slotElements).forEach(([name, value]) => {
-    value.slot.replaceWith(parse(value.content))
+    value.slot.replaceWith(parse(value.content, { comment: true }))
   })
 }
 

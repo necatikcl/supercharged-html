@@ -7,14 +7,14 @@ const removeConditionalElements = require('./removeConditionalElements');
 const compileProps = require('./compileProps');
 
 const renderComponent = (componentPlaceholder, _componentSource) => {
-  const props = compileProps(componentPlaceholder);
+  const props = compileProps(componentPlaceholder, _componentSource);
 
   const sourceStringRaw = _componentSource.toString();
   checkPropsUsage(sourceStringRaw, props);
 
   // {{ expression }}
   const sourceString = renderExpressions(sourceStringRaw, props);
-  const componentSource = sourceStringRaw === sourceString ? _componentSource : parse(sourceString);
+  const componentSource = sourceStringRaw === sourceString ? _componentSource : parse(sourceString, { comment: true });
 
   // s-if, s-else
   removeConditionalElements({ componentSource, props });

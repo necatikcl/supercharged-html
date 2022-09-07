@@ -6,14 +6,16 @@ const inheritAttributes = ({ componentSource, props }) => {
 
   const attrs = props.filter(prop => !prop.isUsed);
 
-  const editableComponent = parse('<div>' + stringContent + '</div>');
-  const el = editableComponent.firstChild.firstChild;
+  const editableComponent = parse('<div>' + stringContent + '</div>', { comment: true });
+  const el = editableComponent.firstChild.lastChild;
 
   attrs.forEach((attr) => {
     if (attr.key === 'class') {
       attr.value.forEach(className => {
         el.classList.add(className)
       })
+      
+      el.classList.remove('')
     } else {
       el.setAttribute(attr.key, attr.value)
     }
@@ -38,13 +40,11 @@ const inheritAttributes = ({ componentSource, props }) => {
     return;
   }
 
-
-
   classNames.forEach(className => {
     el.classList.add(className)
   })
 
-  return editableComponent.firstChild.firstChild
+  return editableComponent.firstChild.lastChild
 }
 
 module.exports = inheritAttributes

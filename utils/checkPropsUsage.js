@@ -2,7 +2,9 @@ const checkPropsUsage = (htmlString, props) => {
   props.forEach((prop) => {
     if (prop.isUsed) return;
 
-    if (htmlString.includes(prop.key)) {
+    const str = '{{ ' + prop.key + ' }}';
+
+    if (htmlString.includes(str)) {
       prop.isUsed = true;
     }
   })

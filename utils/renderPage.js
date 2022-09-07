@@ -16,7 +16,7 @@ const renderPage = ({ components, pageName, production = false }) => {
   print({ type: 'info', content: `Compiling - pages/${pageName}` });
 
   const pageContent = readFileSync(input).toString('utf-8');
-  const pageElement = parse(pageContent);
+  const pageElement = parse(pageContent, { comment: true });
 
   pageDependencies[input] = renderChildComponents(components, pageElement);
 

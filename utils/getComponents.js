@@ -28,7 +28,9 @@ const getComponents = () => {
 
     const content = buffer.toString();
 
-    components[componentName] = parse(content);
+    components[componentName] = parse(content, {
+      comment: true
+    });
   });
 
   Object.keys(components).forEach(componentName => {
@@ -41,7 +43,7 @@ const getComponents = () => {
   Object.entries(components).forEach(([key, value]) => {
     const html = value.toString();
 
-    componentsReworked[key] = () => parse(html);
+    componentsReworked[key] = () => parse(html, { comment: true });
   })
 
   const rerenderComponent = (componentName) => {
@@ -53,14 +55,14 @@ const getComponents = () => {
     const buffer = readFileSync(`./src/components/${fileName}`);
 
     const content = buffer.toString();
-    const component = parse(content);
+    const component = parse(content, { comment: true });
 
     components[componentName] = component;
     componentDependencies[componentName] = trackDependencies(components, component);
 
     const html = component.toString();
 
-    componentsReworked[componentName] = () => parse(html)
+    componentsReworked[componentName] = () => parse(html, { comment: true })
 
     print({ type: 'success', content: `Rerendered - components/${componentName} (${Date.now() - time}ms)` });
   }
