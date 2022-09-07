@@ -12,7 +12,7 @@
   "bugs": {
     "url": "https://github.com/necatikcl/supercharged-html/issues"
   },
-  "version": "0.2.6",
+  "version": "0.2.7",
   "main": "index.js",
   "author": "Necati Koçlu <necatifk07@gmail.com>",
   "license": "MIT",
