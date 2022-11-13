@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 
-const compileHTML = require('./index');
+const { default: compileHTML } = require('./lib/cjs/index');
 
-const isProduction = process.argv.includes('build');
+const production = process.argv.includes('build');
 
-compileHTML({ production: isProduction });
+compileHTML({
+  production,
+  srcDir: './playground/src',
+  outputDir: './playground/dist',
+});
